@@ -23,10 +23,10 @@
 /* defines                                                              */
 /************************************************************************/
 
-#define LED_PIO           
-#define LED_PIO_ID        
-#define LED_PIO_IDX       
-#define LED_PIO_IDX_MASK  
+#define LED_PIO           PIOC
+#define LED_PIO_ID        ID_PIOC
+#define LED_PIO_IDX       8
+#define LED_PIO_IDX_MASK  1
 
 /************************************************************************/
 /* constants                                                            */
@@ -53,7 +53,10 @@ void init(void);
 // Função de inicialização do uC
 void init(void)
 {
-
+	sysclk_init();
+	WDT->WDT_MR = WDT_MR_WDDIS;
+	pmc_enable_periph_clk(LED_PIO_ID);
+	pio_set_output(LED_PIO,LED_PIO_IDX_MASK,0,0,0);
 }
 
 /************************************************************************/
@@ -69,7 +72,10 @@ int main(void)
   // aplicacoes embarcadas não devem sair do while(1).
   while (1)
   {
-
+	pio_set(LED_PIO,LED_PIO_IDX_MASK);
+	delay_ms(200);
+	pio_clear(LED_PIO,LED_PIO_IDX_MASK);
+	delay_ms(200);
   }
   return 0;
 }
