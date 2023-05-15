@@ -161,7 +161,7 @@ void task_proc(void *pvParameters){
 					media += buffer[j];
 				}
 				media = media/10;
-				//printf("ADC:%u", adc);
+				printf("ADC:%u", adc);
 				xQueueSend(xQueueProc, (void *)&media, 10);
 			}
 		}
